@@ -1,7 +1,7 @@
 const { Canvas, Image, FontLibrary } = require('skia-canvas')
 module.exports = Sky
 function Sky(Datas) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let data = Datas.data
             let cf = Datas.config
@@ -124,7 +124,6 @@ function Sky(Datas) {
                     ca.fillStyle = config.Background_Color
 
                     if (config.Image_Overlay) {
-
                         let img0 = image[0], img1 = image[1]
                         let img = img0, img_w = img1.width, img_h = img1.height
                         img_h = (1080 / img_w) * img_h
@@ -137,10 +136,10 @@ function Sky(Datas) {
                     if (config.Color_Overlay)
                         ca.fillRect(0, 0, w, h)
 
-                    ca.strokeStyle = '#fff'
+                    ca.strokeStyle = config.Stroke_Color
                     ca.lineWidth = 14
                     if (config.Stroke_Overlay)
-                        ca.strokeRect(7, 7, w - 7, h - 7)
+                        ca.strokeRect(7, 7, w - 14, h - 14)
 
                     ca.fillStyle = config.Text_Color
                     ca.font = "60px use";
@@ -218,7 +217,7 @@ function Sky(Datas) {
                             let n01 = 1, n02 = 1
                             let t1 = []
                             for (let k in dd) {
-                                let v=dd[k]
+                                let v = dd[k]
                                 if (v[0] < 1) continue
                                 v[0] -= 1
                                 v = v[1]
@@ -314,30 +313,29 @@ function Sky(Datas) {
                     ca.strokeStyle = config.Text_Color
                     ca.lineWidth = 5
                     ca.stroke()
-
-
                 }
 
                 if (config.Image_Overlay) {
                     let img = new Image()
-                    img.onload = function () {
+                    img.onload = async function () {
+                        let canvas = new Canvas(w, h)
+                        console.log(canvas.gpu)
+                        let ctx = canvas.getContext("2d")
                         let obj = {
                             width: img.width,
                             height: img.height,
                         }
-                        let canvas = new Canvas(w, h)
-                        let ctx = canvas.getContext("2d")
                         draw(ctx, [img, obj])
-                        canvas.saveAsSync(Datas.out || __dirname + "/res/out.png")
+                        resolve(await canvas.png)
                     }
                     img.src = Datas.bg || __dirname + '/res/bg.png'
                 } else {
                     let canvas = new Canvas(w, h)
+                    console.log(canvas.gpu)
                     let ctx = canvas.getContext("2d")
                     draw(ctx)
-                    canvas.saveAsSync(Datas.out || __dirname + "/res/out.png")
+                    resolve(await canvas.png)
                 }
-                resolve('生成成功！')
             }
         } catch (e) {
             reject('程序出错: ' + e)

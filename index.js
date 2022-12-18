@@ -1,7 +1,7 @@
 "use strict"
-const myid = 主人QQ号
+const myid = 主人qq号
 const qid = 机器人QQ号
-const gid = [审核群id]
+const gid = [审核群]
 const gids = gid
 const Sky = require("./sky")
 const axios = require("axios")
@@ -275,7 +275,8 @@ bot.on("message.private", async (e) => {
     let msg = e.raw_message
     let qid = sender.user_id
     let msgs = msg.match(/[^\s]+/g)
-    states[qid] ||= 0
+    if (states[qid] == null)
+        states[qid] = 0
     let state = states[qid]
     let temp = temp_config[qid]
 
@@ -329,12 +330,7 @@ bot.on("message.private", async (e) => {
 
                 SkyDB.findOne({ qid: qid, type: 'sky_bg' }, async (err, doc0) => {
                     if (doc0) {
-                        let res = await axios({
-                            url: doc0.url,
-                            responseType: 'arraybuffer',
-                            method: 'get'
-                        })
-                        doc0 = res.data
+                        doc0 = doc0.url
                     }
                     SkyDB.findOne({ qid: qid, type: 'sky_ttf' }, async (err, doc) => {
                         let ttf
@@ -357,19 +353,18 @@ bot.on("message.private", async (e) => {
                         Sky({
                             data: data,
                             config: list,
-                            out: __dirname + '/res/' + qid + '/out.png',
                             ttf: ttf,
                             bg: doc0
-                        }).then(async (s) => {
-                            states[qid] = 0
-                            await e.reply([oicq.segment.image(__dirname + '/res/' + qid + '/out.png')])
+                        }).then(async (buff) => {
+                            await e.reply([oicq.segment.image(buff)])
                             emptyDir(__dirname + '/res/' + qid)
                             fs.rmdirSync(__dirname + '/res/' + qid)
-                        }).catch((err) => {
                             states[qid] = 0
+                        }).catch((err) => {
                             e.reply(err)
                             emptyDir(__dirname + '/res/' + qid)
                             fs.rmdirSync(__dirname + '/res/' + qid)
+                            states[qid] = 0
                         })
                     })
                 })
@@ -564,7 +559,7 @@ bot.on("message.private", async (e) => {
             DB.findOne({ qqid: qid, type: 'user_list' }, async (err, docs) => {
                 if (!docs)
                     return
-                if (!user_data[qid])
+                if (user_data[qid] == null)
                     user_data[qid] = { state: 0 }
                 let data = user_data[qid]
                 let state = data.state// 0:闲置 1:发送标题 2:发送记录
