@@ -175,11 +175,16 @@ bot.on("message.group", (e) => {
                         ]
                         for (let v0 of v.msg) {
                             if (v0[0].type == 'file') {
-                                let url = await bot.pickFriend(v.qqid).getFileUrl(v0[0].fid);
-                                if (url.indexOf('fname=') == -1) {
-                                    url += '&fname=' + v0[0].name;
+                                try {
+                                    let url = await bot.pickFriend(v.qqid).getFileUrl(v0[0].fid);
+                                    if (url.indexOf('fname=') == -1) {
+                                        url += '&fname=' + v0[0].name;
+                                    }
+                                    v0[0] = `文件名称: ${v0[0].name}\n文件大小: ${(v0[0].size / 1024 / 1024).toFixed(2)}MB\n下载链接: ${encodeURI(url)}`
+                                } catch (e) {
+                                    console.log(e)
+                                    continue
                                 }
-                                v0[0] = `文件名称: ${v0[0].name}\n文件大小: ${(v0[0].size / 1024 / 1024).toFixed(2)}MB\n下载链接: ${encodeURI(url)}`
                             }
                             t.push({
                                 user_id: v.qqid,
@@ -673,11 +678,16 @@ bot.on("message.private", async (e) => {
                                         ]
                                         for (let v0 of v.msg) {
                                             if (v0[0].type == 'file') {
-                                                let url = await bot.pickFriend(v.qqid).getFileUrl(v0[0].fid);
-                                                if (url.indexOf('fname=') == -1) {
-                                                    url += '&fname=' + v0[0].name;
+                                                try {
+                                                    let url = await bot.pickFriend(v.qqid).getFileUrl(v0[0].fid);
+                                                    if (url.indexOf('fname=') == -1) {
+                                                        url += '&fname=' + v0[0].name;
+                                                    }
+                                                    v0[0] = `文件名称: ${v0[0].name}\n文件大小: ${(v0[0].size / 1024 / 1024).toFixed(2)}MB\n下载链接: ${encodeURI(url)}`
+                                                } catch (e) {
+                                                    console.log(e)
+                                                    continue
                                                 }
-                                                v0[0] = `文件名称: ${v0[0].name}\n文件大小: ${(v0[0].size / 1024 / 1024).toFixed(2)}MB\n下载链接: ${encodeURI(url)}`
                                             }
                                             t.push({
                                                 user_id: v.qqid,
