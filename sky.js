@@ -142,11 +142,11 @@ function Sky(Datas) {
                         ca.strokeRect(7, 7, w - 14, h - 14)
 
                     ca.fillStyle = config.Text_Color
-                    ca.font = "500 60px use";
+                    ca.font = "60px use";
                     ca.textAlign = "center"
                     ca.fillText(to(data.name), w / 2, 300)
 
-                    ca.font = "500 30px use";
+                    ca.font = "30px use";
                     ca.textAlign = "right"
                     ca.fillText(`作者：${to(data.author)}`, w - 80, 400)
                     ca.fillText(`改编者：${to(data.transcribedBy)}`, w - 80, 450)
@@ -163,7 +163,7 @@ function Sky(Datas) {
 
                     for (let i = 1; i <= len; i++) {
                         ca.fillStyle = config.Number_Color
-                        ca.font = "500 22px use";
+                        ca.font = "22px use";
                         ca.textAlign = "right"
                         ca.fillText(`(${1 + ((i - 1) * 4)})`, 80, p - 10)
                         lines.push(80)
@@ -230,7 +230,7 @@ function Sky(Datas) {
                                             break
                                     }
                                     ca.fillStyle = config.Text_Color
-                                    ca.font = "500 30px use";
+                                    ca.font = "30px use";
                                     ca.textAlign = "center"
                                     ca.fillText('-', x, p + (note_height * n01) + 14)
                                     n01 += 1
@@ -240,7 +240,7 @@ function Sky(Datas) {
                                             break
                                     }
                                     ca.fillStyle = config.Text_Color
-                                    ca.font = "500 30px use";
+                                    ca.font = "30px use";
                                     ca.textAlign = "center"
                                     ca.fillText('-', x, p + 14 + (note_height * n02) + (line_height[i - 1][1] * note_height))
                                     n02 += 1
@@ -269,7 +269,7 @@ function Sky(Datas) {
                                         points.push(p + (note_height * n1) - 2 - (_n * (i - 1)) - 14)
                                     }
                                     ca.fillStyle = config.Text_Color
-                                    ca.font = "500 30px use";
+                                    ca.font = "30px use";
                                     ca.textAlign = "center"
                                     ca.fillText(String(v.key % 7 == 0 && 7 || v.key % 7), x, p + (note_height * n1) + 14)
                                     n1 += 1
@@ -281,7 +281,7 @@ function Sky(Datas) {
                                         points.push(p + (note_height * n2) + (line_height[i - 1][1] * note_height) - 2 - (_n * (i1 - 1)) - 14)
                                     }
                                     ca.fillStyle = config.Text_Color
-                                    ca.font = "500 30px use";
+                                    ca.font = "30px use";
                                     ca.textAlign = "center"
                                     ca.fillText(String(v.key % 7 == 0 && 7 || v.key % 7), x, p + 14 + (note_height * n2) + (line_height[i - 1][1] * note_height))
                                     n2 += 1
