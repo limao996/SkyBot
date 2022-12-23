@@ -331,7 +331,9 @@ bot.on("message.private", async (e) => {
                     list[k] = v
                 }
 
-                fs.mkdirSync(__dirname + '/res/' + qid)
+                try {
+                    fs.mkdirSync(__dirname + '/res/' + qid)
+                } catch { }
 
                 SkyDB.findOne({ qid: qid, type: 'sky_bg' }, async (err, doc0) => {
                     if (doc0) {
